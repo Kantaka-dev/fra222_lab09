@@ -1,0 +1,9 @@
+Ping Instruction Packet
+FF FF FD 00 01 03 00 01 19 4E
+
+Read Instruction Packet
+FF FF FD 00 01 07 00 02 84 00 04 00 1D 15
+
+Write Instruction Packet
+FF FF FD 00 01 09 00 03 74 00 00 02 00 00 CA 89
+//write at Memory[116-120] : 0x00/0x02/0x00/0x00

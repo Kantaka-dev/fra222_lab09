@@ -556,11 +556,16 @@ void DynamixelProtocal2(uint8_t *Memory, uint8_t MotorID, int16_t dataIn,
 				uint16_t numberOfDataToRead = (parameter[2]&0xFF)|(parameter[3]<<8 &0xFF);
 				uint8_t temp[] = {0xff,0xff,0xfd,0x00,0x00,0x04,0x00,0x55,0x00};
 				temp[4] = MotorID;
+
 				uint16_t crc_calc = update_crc(0, temp, 9);
-				crc_calc = update_crc(crc_calc ,&(Memory[startAddr]),numberOfDataToRead);
 				uint8_t crctemp[2];
 				crctemp[0] = crc_calc&0xff;
 				crctemp[1] = (crc_calc>>8)&0xff;
+
+				for (uint8_t i=0; i<datalen-5; i++) // i<datalen-5 because no count (LEN1, LEN2, INST, P1, P2)
+				{
+					Memory[startAddr+i] = parameter[2+i]; // parameter[2+i] because not use (P1, P2)
+				}
 				UARTTxWrite(uart, temp,9);
 				UARTTxWrite(uart, crctemp,2);
 				break;
